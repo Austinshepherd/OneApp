@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Button, Text } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text, FlatList } from 'react-native';
 
 export default function App() {
   const [inputNote, setInputNote] = useState('');
@@ -10,7 +10,10 @@ export default function App() {
   };
 
   const addNoteHandler = () => {
-    setNewNote(currentNotes => [...currentNotes, inputNote]);
+    setNewNote(currentNotes => [
+      ...currentNotes,
+     { id: Math.random().toString(), value: inputNote }
+    ]);
   };
 
   return (
@@ -21,9 +24,15 @@ export default function App() {
          value={inputNote}/>
         <Button title="ADD" onPress={addNoteHandler} />
       </View>
-      <View>
-        {newNote.map((Note) =>  <View key={Note} style={styles.OutputNote}><Text>{Note}</Text></View>)}
-        </View>
+      <FlatList 
+      keyExtractor={(item, index) => item.id}
+      data={newNote} renderItem={noteData => (
+      <View style={styles.OutputNote}>
+      <Text>{noteData.item.value}</Text>
+      </View>
+        )} 
+      
+      />
     </View>
   );
 }
