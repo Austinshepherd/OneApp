@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Button } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text } from 'react-native';
 
 export default function App() {
   const [inputNote, setInputNote] = useState('');
+  const [newNote, setNewNote] = useState([]);
 
   const NoteInputHandler = (enteredText) => {
     setInputNote(enteredText);
   };
 
   const addNoteHandler = () => {
-    console.log(inputNote);
+    setNewNote(currentNotes => [...currentNotes, inputNote]);
   };
 
   return (
@@ -21,7 +22,8 @@ export default function App() {
         <Button title="ADD" onPress={addNoteHandler} />
       </View>
       <View>
-      </View>
+        {newNote.map((Note) =>  <View key={Note} style={styles.OutputNote}><Text>{Note}</Text></View>)}
+        </View>
     </View>
   );
 }
@@ -40,9 +42,16 @@ export default function App() {
     inputBar: {
       borderColor: 'grey',
       borderWidth: 1,
-      borderRadius: 10,
+      borderRadius: 2,
       padding: 10,
       width: '80%'
+    },
+    OutputNote: {
+      padding: 20,
+      backgroundColor: 'grey',
+      marginVertical: 10,
+      borderColor: 'black',
+      borderWidth: 1
     }
   
   });
