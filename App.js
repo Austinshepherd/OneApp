@@ -1,37 +1,31 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Button, Text, FlatList } from 'react-native';
+import {
+   StyleSheet,
+   View,
+   FlatList } from 'react-native';
+
+import NoteItem from './components/NoteItem';
+import NoteInput from './components/NoteInput';
+
 
 export default function App() {
-  const [inputNote, setInputNote] = useState('');
+
   const [newNote, setNewNote] = useState([]);
 
-  const NoteInputHandler = (enteredText) => {
-    setInputNote(enteredText);
-  };
-
-  const addNoteHandler = () => {
+  const addNoteHandler = enteredText => {
     setNewNote(currentNotes => [
       ...currentNotes,
-     { id: Math.random().toString(), value: inputNote }
+     { id: Math.random().toString(), value: enteredText }
     ]);
   };
 
   return (
     <View style={styles.screen}>
-      <View style={styles.inputContainer}>
-        <TextInput placeholder="new note"style={styles.inputBar}
-         onChangeText={NoteInputHandler}
-         value={inputNote}/>
-        <Button title="ADD" onPress={addNoteHandler} />
-      </View>
+      <NoteInput onAddNote={addNoteHandler} />
       <FlatList 
       keyExtractor={(item, index) => item.id}
-      data={newNote} renderItem={noteData => (
-      <View style={styles.OutputNote}>
-      <Text>{noteData.item.value}</Text>
-      </View>
-        )} 
-      
+      data={newNote}
+      renderItem={NoteData => <NoteItem title={NoteData.item.value} />} 
       />
     </View>
   );
@@ -40,7 +34,7 @@ export default function App() {
 
   const styles = StyleSheet.create({
      screen: {
-       padding: 50
+       padding: 50,
      },
 
     inputContainer: {
