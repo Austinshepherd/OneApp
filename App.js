@@ -19,13 +19,23 @@ export default function App() {
     ]);
   };
 
+  const removeNoteHandler = noteId => {
+    setNewNote(currentNotes => {
+      return currentNotes.filter((note) => note.id !== noteId); 
+    });
+  }
+
   return (
     <View style={styles.screen}>
       <NoteInput onAddNote={addNoteHandler} />
       <FlatList 
       keyExtractor={(item, index) => item.id}
       data={newNote}
-      renderItem={NoteData => <NoteItem title={NoteData.item.value} />} 
+      renderItem={itemData =>
+       <NoteItem 
+       id={itemData.item.id}
+       title={itemData.item.value}
+       onDelete={removeNoteHandler} />} 
       />
     </View>
   );
